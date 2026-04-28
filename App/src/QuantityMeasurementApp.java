@@ -2,17 +2,22 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
-        QuantityWeight w1 =
-            new QuantityWeight(1, WeightUnit.KILOGRAM);
+        Quantity<LengthUnit> l1 =
+            new Quantity<>(1, LengthUnit.FEET);
 
-        QuantityWeight w2 =
-            new QuantityWeight(1000, WeightUnit.GRAM);
+        Quantity<LengthUnit> l2 =
+            new Quantity<>(12, LengthUnit.INCHES);
 
-        QuantityWeight w3 =
-            new QuantityWeight(2, WeightUnit.POUND);
+        System.out.println(l1.equals(l2));
+        System.out.println(l1.add(l2));
+
+        Quantity<WeightUnit> w1 =
+            new Quantity<>(1, WeightUnit.KILOGRAM);
+
+        Quantity<WeightUnit> w2 =
+            new Quantity<>(1000, WeightUnit.GRAM);
 
         System.out.println(w1.equals(w2));
-        System.out.println(w1.convertTo(WeightUnit.GRAM));
-        System.out.println(w1.add(w3));
+        System.out.println(w1.add(w2));
     }
 }

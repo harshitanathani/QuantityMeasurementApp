@@ -1,37 +1,37 @@
-public class QuantityWeight {
+public class Quantity<U extends IMeasurable> {
 
     private final double value;
-    private final WeightUnit unit;
+    private final U unit;
 
-    public QuantityWeight(double value, WeightUnit unit) {
+    public Quantity(double value, U unit) {
         this.value = value;
         this.unit = unit;
     }
 
-    public QuantityWeight convertTo(WeightUnit targetUnit) {
-        double kg = unit.convertToBaseUnit(value);
-        double converted =
-                targetUnit.convertFromBaseUnit(kg);
+    public Quantity<U> convertTo(U targetUnit) {
+        double base = unit.convertToBaseUnit(value);
+        double result =
+                targetUnit.convertFromBaseUnit(base);
 
-        return new QuantityWeight(converted, targetUnit);
+        return new Quantity<>(result, targetUnit);
     }
 
-    public QuantityWeight add(QuantityWeight other) {
+    public Quantity<U> add(Quantity<U> other) {
         return add(other, this.unit);
     }
 
-    public QuantityWeight add(
-            QuantityWeight other,
-            WeightUnit targetUnit) {
+    public Quantity<U> add(
+            Quantity<U> other,
+            U targetUnit) {
 
-        double totalKg =
+        double total =
                 this.unit.convertToBaseUnit(this.value)
               + other.unit.convertToBaseUnit(other.value);
 
         double result =
-                targetUnit.convertFromBaseUnit(totalKg);
+                targetUnit.convertFromBaseUnit(total);
 
-        return new QuantityWeight(result, targetUnit);
+        return new Quantity<>(result, targetUnit);
     }
 
     @Override
@@ -42,8 +42,7 @@ public class QuantityWeight {
         if (obj == null || getClass() != obj.getClass())
             return false;
 
-        QuantityWeight other =
-                (QuantityWeight) obj;
+        Quantity<?> other = (Quantity<?>) obj;
 
         return Double.compare(
             this.unit.convertToBaseUnit(this.value),
