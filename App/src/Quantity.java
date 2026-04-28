@@ -34,6 +34,35 @@ public class Quantity<U extends IMeasurable> {
         return new Quantity<>(result, targetUnit);
     }
 
+    public Quantity<U> subtract(Quantity<U> other) {
+        return subtract(other, this.unit);
+    }
+
+    public Quantity<U> subtract(
+            Quantity<U> other,
+            U targetUnit) {
+
+        double diff =
+                this.unit.convertToBaseUnit(this.value)
+              - other.unit.convertToBaseUnit(other.value);
+
+        double result =
+                targetUnit.convertFromBaseUnit(diff);
+
+        return new Quantity<>(result, targetUnit);
+    }
+
+    public double divide(Quantity<U> other) {
+
+        double first =
+            this.unit.convertToBaseUnit(this.value);
+
+        double second =
+            other.unit.convertToBaseUnit(other.value);
+
+        return first / second;
+    }
+
     @Override
     public boolean equals(Object obj) {
 
