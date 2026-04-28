@@ -3,34 +3,30 @@ public class QuantityMeasurementApp {
     public static void main(String[] args) {
 
         Quantity<LengthUnit> l1 =
-            new Quantity<>(1, LengthUnit.FEET);
+            new Quantity<>(10, LengthUnit.FEET);
 
         Quantity<LengthUnit> l2 =
-            new Quantity<>(12, LengthUnit.INCHES);
+            new Quantity<>(6, LengthUnit.INCHES);
 
-        System.out.println(l1.equals(l2));
-        System.out.println(l1.add(l2));
+        System.out.println(l1.subtract(l2));
+        System.out.println(l1.divide(l2));
 
         Quantity<WeightUnit> w1 =
-            new Quantity<>(1, WeightUnit.KILOGRAM);
+            new Quantity<>(10, WeightUnit.KILOGRAM);
 
         Quantity<WeightUnit> w2 =
-            new Quantity<>(1000, WeightUnit.GRAM);
+            new Quantity<>(5000, WeightUnit.GRAM);
 
-        System.out.println(w1.equals(w2));
-        System.out.println(w1.add(w2));
+        System.out.println(w1.subtract(w2));
+        System.out.println(w1.divide(w2));
 
         Quantity<VolumeUnit> v1 =
-            new Quantity<>(1, VolumeUnit.LITRE);
+            new Quantity<>(5, VolumeUnit.LITRE);
 
         Quantity<VolumeUnit> v2 =
-            new Quantity<>(1000, VolumeUnit.MILLILITRE);
+            new Quantity<>(500, VolumeUnit.MILLILITRE);
 
-        Quantity<VolumeUnit> v3 =
-            new Quantity<>(1, VolumeUnit.GALLON);
-
-        System.out.println(v1.equals(v2));
-        System.out.println(v1.add(v2));
-        System.out.println(v3.convertTo(VolumeUnit.LITRE));
+        System.out.println(v1.subtract(v2));
+        System.out.println(v1.divide(v2));
     }
 }
