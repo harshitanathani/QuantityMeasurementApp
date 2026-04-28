@@ -31,24 +31,20 @@ public class QuantityMeasurementApp {
         }
 
         public QuantityLength convertTo(LengthUnit targetUnit) {
-            double feetValue = convertToFeet();
-            double converted = feetValue / targetUnit.getFactor();
+            double feet = convertToFeet();
+            double converted = feet / targetUnit.getFactor();
             return new QuantityLength(converted, targetUnit);
         }
 
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
+        public QuantityLength add(QuantityLength other) {
+            double totalFeet =
+                    this.convertToFeet()
+                  + other.convertToFeet();
 
-            if (obj == null || getClass() != obj.getClass())
-                return false;
+            double result =
+                    totalFeet / this.unit.getFactor();
 
-            QuantityLength other = (QuantityLength) obj;
-
-            return Double.compare(
-                this.convertToFeet(),
-                other.convertToFeet()
-            ) == 0;
+            return new QuantityLength(result, this.unit);
         }
 
         @Override
@@ -60,16 +56,21 @@ public class QuantityMeasurementApp {
     public static void main(String[] args) {
 
         QuantityLength q1 =
-            new QuantityLength(1.0, LengthUnit.FEET);
+            new QuantityLength(1, LengthUnit.FEET);
 
         QuantityLength q2 =
-            q1.convertTo(LengthUnit.INCHES);
+            new QuantityLength(12, LengthUnit.INCHES);
 
-        QuantityLength q3 =
-            new QuantityLength(1.0, LengthUnit.YARDS)
-                .convertTo(LengthUnit.INCHES);
+        QuantityLength q3 = q1.add(q2);
 
-        System.out.println(q2);
         System.out.println(q3);
+
+        QuantityLength q4 =
+            new QuantityLength(1, LengthUnit.YARDS);
+
+        QuantityLength q5 =
+            new QuantityLength(3, LengthUnit.FEET);
+
+        System.out.println(q4.add(q5));
     }
 }
