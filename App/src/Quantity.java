@@ -8,10 +8,35 @@ public class Quantity<U extends IMeasurable> {
         this.unit = unit;
     }
 
+    private double toBase() {
+        return unit.convertToBaseUnit(value);
+    }
+
+    private double performArithmetic(
+            Quantity<U> other,
+            char operation) {
+
+        double first = this.toBase();
+        double second = other.toBase();
+
+        switch (operation) {
+            case '+':
+                return first + second;
+
+            case '-':
+                return first - second;
+
+            case '/':
+                return first / second;
+
+            default:
+                return 0;
+        }
+    }
+
     public Quantity<U> convertTo(U targetUnit) {
-        double base = unit.convertToBaseUnit(value);
         double result =
-                targetUnit.convertFromBaseUnit(base);
+            targetUnit.convertFromBaseUnit(toBase());
 
         return new Quantity<>(result, targetUnit);
     }
@@ -24,12 +49,9 @@ public class Quantity<U extends IMeasurable> {
             Quantity<U> other,
             U targetUnit) {
 
-        double total =
-                this.unit.convertToBaseUnit(this.value)
-              + other.unit.convertToBaseUnit(other.value);
-
         double result =
-                targetUnit.convertFromBaseUnit(total);
+            targetUnit.convertFromBaseUnit(
+                performArithmetic(other, '+'));
 
         return new Quantity<>(result, targetUnit);
     }
@@ -42,25 +64,15 @@ public class Quantity<U extends IMeasurable> {
             Quantity<U> other,
             U targetUnit) {
 
-        double diff =
-                this.unit.convertToBaseUnit(this.value)
-              - other.unit.convertToBaseUnit(other.value);
-
         double result =
-                targetUnit.convertFromBaseUnit(diff);
+            targetUnit.convertFromBaseUnit(
+                performArithmetic(other, '-'));
 
         return new Quantity<>(result, targetUnit);
     }
 
     public double divide(Quantity<U> other) {
-
-        double first =
-            this.unit.convertToBaseUnit(this.value);
-
-        double second =
-            other.unit.convertToBaseUnit(other.value);
-
-        return first / second;
+        return performArithmetic(other, '/');
     }
 
     @Override
@@ -74,7 +86,7 @@ public class Quantity<U extends IMeasurable> {
         Quantity<?> other = (Quantity<?>) obj;
 
         return Double.compare(
-            this.unit.convertToBaseUnit(this.value),
+            this.toBase(),
             other.unit.convertToBaseUnit(other.value)
         ) == 0;
     }
