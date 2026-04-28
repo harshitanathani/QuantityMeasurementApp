@@ -37,14 +37,18 @@ public class QuantityMeasurementApp {
         }
 
         public QuantityLength add(QuantityLength other) {
+            return add(other, this.unit);
+        }
+
+        public QuantityLength add(QuantityLength other, LengthUnit targetUnit) {
             double totalFeet =
                     this.convertToFeet()
                   + other.convertToFeet();
 
             double result =
-                    totalFeet / this.unit.getFactor();
+                    totalFeet / targetUnit.getFactor();
 
-            return new QuantityLength(result, this.unit);
+            return new QuantityLength(result, targetUnit);
         }
 
         @Override
@@ -61,16 +65,8 @@ public class QuantityMeasurementApp {
         QuantityLength q2 =
             new QuantityLength(12, LengthUnit.INCHES);
 
-        QuantityLength q3 = q1.add(q2);
-
-        System.out.println(q3);
-
-        QuantityLength q4 =
-            new QuantityLength(1, LengthUnit.YARDS);
-
-        QuantityLength q5 =
-            new QuantityLength(3, LengthUnit.FEET);
-
-        System.out.println(q4.add(q5));
+        System.out.println(q1.add(q2, LengthUnit.FEET));
+        System.out.println(q1.add(q2, LengthUnit.INCHES));
+        System.out.println(q1.add(q2, LengthUnit.YARDS));
     }
 }
