@@ -30,6 +30,12 @@ public class QuantityMeasurementApp {
             return value * unit.getFactor();
         }
 
+        public QuantityLength convertTo(LengthUnit targetUnit) {
+            double feetValue = convertToFeet();
+            double converted = feetValue / targetUnit.getFactor();
+            return new QuantityLength(converted, targetUnit);
+        }
+
         @Override
         public boolean equals(Object obj) {
             if (this == obj) return true;
@@ -40,27 +46,30 @@ public class QuantityMeasurementApp {
             QuantityLength other = (QuantityLength) obj;
 
             return Double.compare(
-                    this.convertToFeet(),
-                    other.convertToFeet()
+                this.convertToFeet(),
+                other.convertToFeet()
             ) == 0;
+        }
+
+        @Override
+        public String toString() {
+            return value + " " + unit;
         }
     }
 
     public static void main(String[] args) {
 
         QuantityLength q1 =
-            new QuantityLength(1.0, LengthUnit.YARDS);
+            new QuantityLength(1.0, LengthUnit.FEET);
 
         QuantityLength q2 =
-            new QuantityLength(3.0, LengthUnit.FEET);
+            q1.convertTo(LengthUnit.INCHES);
 
         QuantityLength q3 =
-            new QuantityLength(1.0, LengthUnit.CENTIMETERS);
+            new QuantityLength(1.0, LengthUnit.YARDS)
+                .convertTo(LengthUnit.INCHES);
 
-        QuantityLength q4 =
-            new QuantityLength(0.393701, LengthUnit.INCHES);
-
-        System.out.println(q1.equals(q2));
-        System.out.println(q3.equals(q4));
+        System.out.println(q2);
+        System.out.println(q3);
     }
 }
